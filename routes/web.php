@@ -18,18 +18,14 @@ use Illuminate\Support\Facades\Route;
 });
 */
 
-Route::get('/', 'principalController@principal');
+Route::get('/', 'principalController@principal')->name('site.index');
+Route::get('/sobre-nos', 'sobreNosController@sobreNos')->name('site.sobrenos');
+Route::get('/contato', 'contatoController@contato')->name('site.contato');
+Route::get('/login', function() { return 'Login'; })->name('site.login');
 
-Route::get('/sobre-nos', 'sobreNosController@sobreNos');
+Route::prefix('/app')->group(function(){
+    Route::get('/clientes', function() { return 'Clientes'; })->name('app.clientes');
+    Route::get('/fornecedores', function() { return 'Fornecedores'; })->name('app.fornecedores');
+    Route::get('/produtos', function() { return 'Produtos'; })->name('app.produtos');
 
-Route::get('/contato', 'contatoController@contato');
-
-Route::get(
-    'contato/{nome}/{categoria_id}', 
-    function(
-        string $nome = 'Desconhecido',
-        int $categoria_id = 1 //'informação'
-    ) {
-        echo "Estamos aqui: $nome - $categoria_id";
-    }
-)->where('categoria_id', '[0-9]+')->where('nome', '[A-Za-z]+');
+});
